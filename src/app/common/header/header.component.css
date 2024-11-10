@@ -1,0 +1,9 @@
+.nav-link.active.custom-active {
+    background-color: #FFD700; 
+    color: white;            
+}
+
+.nav-link.custom-active:hover {
+    background-color: #FFD700; 
+    color: white;
+}

@@ -1,0 +1,29 @@
+<div class="container m-0 p-0">
+      <div class="row">
+        <div class="form-container">
+            <h2>Employee Registration</h2>
+         
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input [(ngModel)]="Employee.employeeName" type="text" class="form-control" id="name" placeholder="Enter full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input  [(ngModel)]="Employee.email" type="email" class="form-control" id="email" placeholder="Enter email" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact">Contact Number</label>
+                    <input [(ngModel)]="Employee.contactNumber"  type="tel" class="form-control" id="contact" placeholder="Enter contact number" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input  [(ngModel)]="Employee.address" type="text" class="form-control" id="address" placeholder="Enter address" required>
+                </div>
+                <div class="form-group">
+                    <label for="position">Position</label>
+                    <input   [(ngModel)]="Employee.position"  type="text" class="form-control" id="position" placeholder="Enter position" required>
+                </div>
+                <button id="btnRegister" type="submit" class="btn btn-block" (click)="registerEmployee()">Register</button>
+           
+        </div>
+</div>
