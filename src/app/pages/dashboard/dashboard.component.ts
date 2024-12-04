@@ -12,20 +12,20 @@ import { FormsModule } from '@angular/forms';
 export class DashboardComponent implements OnInit {
 
   public userList:any=[];
-public count:number=0;
+  public count:number=0;
   ngOnInit(): void {
     this.getUserCount();
-   this.getUsers();
+    this.getUsers();
   }
  getUserCount(){
-  fetch("http://localhost:8080/get-user-count").then((res)=>res.json()).then((data)=>{
+  fetch("http://localhost:8080/user/get-user-count").then((res)=>res.json()).then((data)=>{
     console.log(data);
     this.count=data;
   })
  }
 
  getUsers(){
-  fetch("http://localhost:8080/get-all").then((res)=>res.json()).then((data)=>{
+  fetch("http://localhost:8080/user/get-all-users").then((res)=>res.json()).then((data)=>{
     console.log(data);
   this.userList=data;
   })

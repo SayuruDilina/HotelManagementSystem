@@ -1,53 +1,110 @@
-<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="height:100vh">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-     
-    </a>
+<nav class=" top-0 z-50 w-full  border-b border-gray-200">
+    <div class="px-3 py-3 lg:px-5 lg:pl-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center justify-start rtl:justify-end">
+                <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
+                    type="button"
+                    class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                    <span class="sr-only">Open sidebar</span>
+                  
+                    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path clip-rule="evenodd" fill-rule="evenodd"
+                            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+                        </path>
 
-    <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item" style="margin-top: 50px;">
-            <a href="#" class="nav-link custom-active"  aria-current="page" routerLink="/">
-                <i class="bi bi-house me-2"></i>
-                <span class="d-none d-md-inline">Home</span> 
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link link-body-emphasis" style="margin-top:20px;" routerLink="/packages">
-                <i class="bi bi-speedometer2 me-2"></i>
-                <span class="d-none d-md-inline">Packages</span>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link link-body-emphasis"  style="margin-top:20px;" routerLink="/order-details">
-                <i class="bi bi-table me-2"></i>
-                <span class="d-none d-md-inline">Order Details</span>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link link-body-emphasis"  style="margin-top:20px;" routerLink="/employees">
-                <i class="bi bi-grid me-2"></i>
-                <span class="d-none d-md-inline">Employees</span>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link link-body-emphasis"  style="margin-top:20px;" routerLink="/other">
-                <i class="bi bi-people-circle me-2"></i>
-                <span class="d-none d-md-inline">Other</span>
-            </a>
-        </li>
-    </ul>
+                    </svg>
 
-    <hr>
-    <div class="dropdown">
-        <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-            <strong class="d-none d-md-inline">mdo</strong>
-        </a>
-        <ul class="dropdown-menu text-small shadow">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
+                </button>
+
+            </div>
+            <div>
+                <!-- <img src="./assets/img/hotel-logo.jpg" alt="" style="width:10%"> -->
+            </div>
+            <div class="flex items-center">
+                <p class=" position-relative top-3 font-bold">Welcome</p>
+                <div class="flex items-center ms-3">
+
+                    <div>
+                        <button type="button"
+                            class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                            aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                            <span class="sr-only">Open user menu</span>
+                            <img class="w-8 h-8 rounded-full"
+                                src="./assets/img/profile-pic.jpg" alt="user photo">
+
+                        </button>
+                    </div>
+                    <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+                        id="dropdown-user">
+                        <div class="px-4 py-3" role="none">
+                            <p class="text-sm text-gray-900 dark:text-white" role="none">
+                                Sayuru Dilina </p>
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                                Sayurugmail.com
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ml-64 mt-4 px-4 hidden sm:block"> <!-- Adjust ml-64 for proper spacing -->
+        <img src="./assets/img/hotel-logo.jpg" alt="Hotel Logo" style="width: 40%; max-width: 150px; margin-top: -100px;">
+    </div>
+    
+</nav>
+
+
+<aside id="logo-sidebar"
+    class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full  border-r border-gray-200 sm:translate-x-0"
+    aria-label="Sidebar" style="background-color: antiquewhite;">
+    <div class="h-full px-3 pb-4 overflow-y-auto" style="background-color:antiquewhite;">
+        <ul style="font-weight: bold;" class="space-y-2 font-medium">
+            <li class="position-relative top-8">
+                <a routerLink="/dashboard"
+                    class="no-underline flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-[#C9AA92;] dark:hover:bg-gray-700 group">
+                    <img style="width: 15%; margin-right: 20px;" src="./assets/img/icons8-home-50.png" alt="">
+                    <span class="d-none d-md-inline">Home</span>
+                </a>
+            </li>
+            <li class="position-relative top-12">
+                <a routerLink="package-details"
+                    class="no-underline flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-[#C9AA92] dark:hover:bg-gray-700 group">
+                    <img src="./assets/img/icons8-package-search-30.png" style="width: 15%; margin-right: 20px;" alt="">
+                    <span class="d-none d-md-inline">Packages</span>
+                </a>
+            </li>
+            <li class="position-relative top-12">
+                <a routerLink="order-details"
+                    class="no-underline flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-[#C9AA92] dark:hover:bg-gray-700 group">
+                    <img src="./assets/img/icons8-list-64.png" style="width: 15%;  margin-right:20px;" alt="">
+                    <span class="d-none d-md-inline">Order Details</span>
+                </a>
+            </li>
+            <li class="position-relative top-12">
+                <a routerLink="employee-registration"
+                    class="no-underline flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-[#C9AA92] dark:hover:bg-gray-700 group">
+                    <img src="./assets/img/icons8-group-50.png" style="width: 15%;  margin-right:20px;" alt="">
+                    <span class="d-none d-md-inline">Employees</span>
+                </a>
+            </li>
+            <li class="position-relative top-12">
+                <a routerLink="other-details"
+                    class="no-underline flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-[#C9AA92] dark:hover:bg-gray-700 group">
+                    <img src="./assets/img/icons8-other-50.png" style="width: 15%;  margin-right:20px;" alt="">
+                    <span class="d-none d-md-inline">Other</span>
+                </a>
+            </li>
+            <li class="position-relative top-40">
+                <a routerLink=""
+                    class="no-underline flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-[#C9AA92] dark:hover:bg-gray-700 group">
+                    <img src="./assets/img/icons8-log-out-32.png" style="width: 15%;  margin-right:20px;" alt="">
+                    <span class="d-none d-md-inline">Log Out </span>
+                </a>
+            </li>
+
         </ul>
     </div>
-</div>
+</aside>

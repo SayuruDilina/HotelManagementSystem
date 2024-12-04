@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Employee } from '../../../model/Employee';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-employees',
@@ -11,21 +13,18 @@ import { FormsModule } from '@angular/forms';
 })
 export class EmployeesComponent {
 
-  public Employee: any = {
-    employeeName: "",
-    email: "",
-    contactNumber: "",
-    address: "",
-    position: ""
+  public employee: Employee; 
+  constructor(){
+    this.employee=new Employee('','','','','',0);
   }
   
   registerEmployee() {
-    fetch("http://localhost:8080/register-employee", {
+    fetch("http://localhost:8080/employee/register-employee", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(this.Employee)
+      body: JSON.stringify(this.employee)
     })
       .then((res) => {
         if (!res.ok) {
@@ -34,7 +33,12 @@ export class EmployeesComponent {
           });
         } else {
           return res.json().then((data) => {
-            alert(data.message);
+            Swal.fire({
+              title: "Good job!",
+              text:data.message,
+              icon: "success"
+            });
+         
           });
         }
       })

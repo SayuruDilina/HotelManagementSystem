@@ -1,56 +1,6 @@
-.card {
-    margin: 20px;
-    background-color: #F7E3D1;
+.package-form label{
+    font-weight: 600;
 }
-.forms-group {
-    display: flex;  /* Use Flexbox */
-    align-items: center;  /* Vertically align items */
-}
-
-.forms-group h5 {
-    margin-right: 10px;  /* Add space between the title and input */
-}
-
-.forms-group input {
-
-    flex-grow: 1;  /* Allow input to take up available space if needed */
-}
-#dropdownMenuButton{
-    background-color: #F7E3D1;
-    margin-left: 800px;
-    margin-top: -100px;
-    width:300px;
-    color: black;
-}
-.table {
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-left: 70px;
-}
-
-.table th, .table td {
-    padding: 15px;
-    text-align: center;
-}
-
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: #f9f9f9;
-}
-
-.table-hover tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
-.table th {
-    background-color: #FFD700;  /* Beautiful yellow */
-    color: #fff;
-    font-weight: bold;
-}
-
-@media (max-width: 767px) {
-    .table th, .table td {
-        padding: 10px;
-        font-size: 12px;
-    }
+.package-form input{
+    background-color:#fcf4ed ;
 }

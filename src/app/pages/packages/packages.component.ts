@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-packages',
   standalone: true,
@@ -17,7 +19,7 @@ export class PackagesComponent {
   public detailInput: string = '';
   public isClicked: boolean = false;
   private selectedIndex: any;
-  public isUpdateDetails:boolean=false;
+  public isUpdateDetails: boolean = false;
 
 
   public Package: any = {
@@ -27,12 +29,8 @@ export class PackagesComponent {
     PackgeDetailsArray: [],
     price: "",
     availableQty: "",
-    image1: null,
-    image2: null,
-    image3: null,
-    image4: null
+    image:null  
   }
-
 
 
   public selectedPackage: string | null = null;
@@ -49,37 +47,39 @@ export class PackagesComponent {
     }
   }
   updateDetail() {
-    this.isUpdateDetails=false;
+    this.isUpdateDetails = false;
     if (this.selectedIndex !== null && this.detailInput.trim()) {
       // Update the detail at the selected index
-      this.Package.PackgeDetailsArray[this.selectedIndex] = this.detailInput;
+      this.Package.packgeDetailsArray[this.selectedIndex] = this.detailInput;
       this.selectedIndex = null; // Reset the selected index
       this.detailInput = '';     // Clear the input field after updating
     }
 
   }
-  deleteDetail(){
+  deleteDetail() {
     if (this.selectedIndex !== null && this.detailInput.trim()) {
-     
+
       this.Package.PackgeDetailsArray.splice(this.selectedIndex, 1);
       this.selectedIndex = null; // Reset the selected index
       this.detailInput = '';     // Clear the input field after updating
     }
   }
   getIndex(i: any, detail: any) {
-    this.isUpdateDetails=true;
+    this.isUpdateDetails = true;
     this.selectedIndex = i; // Store the index of the selected detail
     this.detailInput = detail;
   }
   public searchId: string = '';
-public packageExists:boolean=false;
+  public packageExists: boolean = false;
+
   searchPackage() {
     this.isClicked = true;
-    if(this.selectedPackage==null){
+    
+    if (this.selectedPackage == null) {
       alert("Please select a pacakge");
     }
     if (this.searchId && this.selectedPackage === "Accommodation") {
-      fetch(`http://localhost:8080/search-by-id/${this.searchId}`)
+      fetch(`http://localhost:8080/accommodation/search-by-id/${this.searchId}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -89,23 +89,12 @@ public packageExists:boolean=false;
         .then((data) => {
           console.log(data);
           if (data) {
-            this.packageExists=true;
+            this.packageExists = true;
             this.Package = { ...data };
             this.Package.id = data.accommodationId;
-            const image2 = data.image2;
-            const image3 = data.image3;
-            const image4 = data.image4;
-
-            const file1 = this.base64ToFile(data.image1, 'image.png');
-            const file2 = this.base64ToFile(image2, 'image.png');
-            const file3 = this.base64ToFile(image3, 'image.png');
-            const file4 = this.base64ToFile(image4, 'image.png');
-            console.log(file1);
-            this.Package.image1 = file1;
-            this.Package.image2 = file2;
-            this.Package.image3 = file3;
-            this.Package.image4 = file4;
-
+            const file = this.base64ToFile(data.image, 'image.png');
+            console.log(file);
+            this.Package.image = file;
             console.log(this.Package);
             this.accomdationPackageList[0] = data;
             if (Array.isArray(data.packageDetails)) {
@@ -125,7 +114,7 @@ public packageExists:boolean=false;
           console.error("Error fetching package by ID:", error);
         });
     } else if (this.searchId && this.selectedPackage === "DayOut") {
-      fetch(`http://localhost:8080/search-by-id-dayout/${this.searchId}`)
+      fetch(`http://localhost:8080/day-out/search-by-id/${this.searchId}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -135,23 +124,57 @@ public packageExists:boolean=false;
         .then((data) => {
           console.log(data);
           if (data) {
+            this.packageExists = true;
             this.Package = { ...data };
             this.Package.id = data.accommodationId;
-            const image2 = data.image2;
-            const image3 = data.image3;
-            const image4 = data.image4;
-            this.Package.availableQty=data.availableSheets;
-            this.Package.id=data.dayOutID;
+            this.Package.availableQty = data.availableSheets;
+            this.Package.id = data.dayOutID;
 
-            const file1 = this.base64ToFile(data.image1, 'image.png');
-            const file2 = this.base64ToFile(image2, 'image.png');
-            const file3 = this.base64ToFile(image3, 'image.png');
-            const file4 = this.base64ToFile(image4, 'image.png');
-            console.log(file1);
-            this.Package.image1 = file1;
-            this.Package.image2 = file2;
-            this.Package.image3 = file3;
-            this.Package.image4 = file4;
+            const file = this.base64ToFile(data.image, 'image.png');
+             console.log(file);
+            this.Package.image = file;
+            
+            console.log(this.Package);
+            this.accomdationPackageList[0] = data;
+            if (Array.isArray(data.packageDetails)) {
+              data.packageDetails = data.packageDetails.map((detail: string) => {
+
+                return detail.replace(/[\[\]\"']/g, '');
+              });
+            }
+            this.Package.packgeDetailsArray = data.packageDetails;
+
+
+          } else {
+            console.error("No data found for the provided ID");
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching package by ID:", error);
+        });
+    } else if (this.searchId && this.selectedPackage === "MenuOptions") {
+      fetch(`http://localhost:8080/menu-option/search-by-id/${this.searchId}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if (data) {
+            this.packageExists = true;
+            this.Package = { ...data };
+            this.Package.id = data.accommodationId;
+            
+
+            const file = this.base64ToFile(data.image, 'image.png');
+            
+            console.log(file);
+            this.Package.image = file;
+            
+            this.Package.availableQty = data.availableSheets;
+            this.Package.id = data.menuOptionId;
 
             console.log(this.Package);
             this.accomdationPackageList[0] = data;
@@ -171,53 +194,6 @@ public packageExists:boolean=false;
         .catch((error) => {
           console.error("Error fetching package by ID:", error);
         });
-    } else if (this.searchId && this.selectedPackage === "MenuOptions") {
-      fetch(`http://localhost:8080/search-by-id-menuoptions/${this.searchId}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        if (data) {
-          this.Package = { ...data };
-          this.Package.id = data.accommodationId;
-          const image2 = data.image2;
-          const image3 = data.image3;
-          const image4 = data.image4;
-
-          const file1 = this.base64ToFile(data.image1, 'image.png');
-          const file2 = this.base64ToFile(image2, 'image.png');
-          const file3 = this.base64ToFile(image3, 'image.png');
-          const file4 = this.base64ToFile(image4, 'image.png');
-          console.log(file1);
-          this.Package.image1 = file1;
-          this.Package.image2 = file2;
-          this.Package.image3 = file3;
-          this.Package.image4 = file4;
-          this.Package.availableQty=data.availableSheets;
-          this.Package.id=data.menuOptionId;
-
-          console.log(this.Package);
-          this.accomdationPackageList[0] = data;
-          if (Array.isArray(data.packageDetails)) {
-            data.packageDetails = data.packageDetails.map((detail: string) => {
-
-              return detail.replace(/[\[\]\"']/g, '');
-            });
-          }
-          this.Package.PackgeDetailsArray = data.packageDetails;
-
-
-        } else {
-          console.error("No data found for the provided ID");
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching package by ID:", error);
-      });
     }
 
     else {
@@ -262,7 +238,7 @@ public packageExists:boolean=false;
     const formData = new FormData();
 
     console.log(this.Package.PackgeDetailsArray);
-    formData.append('id', this.Package.id);
+    formData.append('id', this.Package.id.toString());
     formData.append('packageNum', this.Package.packageNum);
     formData.append('packageName', this.Package.packageName);
     formData.append('price', this.Package.price.toString());
@@ -274,20 +250,12 @@ public packageExists:boolean=false;
 
 
 
-    if (this.Package.image1) {
-      formData.append('image1', this.Package.image1, this.Package.image1.name);
+    if (this.Package.image) {
+      formData.append('image', this.Package.image, this.Package.image.name);
     }
-    if (this.Package.image2) {
-      formData.append('image2', this.Package.image2, this.Package.image2.name);
-    }
-    if (this.Package.image3) {
-      formData.append('image3', this.Package.image3, this.Package.image3.name);
-    }
-    if (this.Package.image4) {
-      formData.append('image4', this.Package.image4, this.Package.image4.name);
-    }
+
     if (this.selectedPackage === "Accommodation") {
-      fetch("http://localhost:8080/update-accommodation-details", {
+      fetch("http://localhost:8080/accommodation/update-accommodation-package", {
         method: "PUT",
         body: formData
       })
@@ -310,7 +278,7 @@ public packageExists:boolean=false;
 
         });
     } else if (this.selectedPackage === "DayOut") {
-      fetch("http://localhost:8080/update-dayout-details", {
+      fetch("http://localhost:8080/day-out/update-day-out-package", {
         method: "PUT",
         body: formData
       })
@@ -333,7 +301,7 @@ public packageExists:boolean=false;
 
         });
     } else if (this.selectedPackage === "MenuOptions") {
-      fetch("http://localhost:8080/update-menuoptions-details", {
+      fetch("http://localhost:8080/menu-option/update-menu-options-package", {
         method: "PUT",
         body: formData
       })
@@ -362,9 +330,9 @@ public packageExists:boolean=false;
 
   deletePackage() {
     if (this.searchId && this.selectedPackage === "Accommodation") {
-      fetch(`http://localhost:8080/delete-by-id/${this.searchId}`,{
+      fetch(`http://localhost:8080/accommodation/delete-by-id/${this.searchId}`, {
         method: "DELETE",
-       
+
       })
         .then((response) => {
           if (!response.ok) {
@@ -372,11 +340,11 @@ public packageExists:boolean=false;
           }
           return response.json();
         })
-       
-    }else if (this.searchId && this.selectedPackage === "DayOut") {
-      fetch(`http://localhost:8080/delete-by-id-dayout/${this.searchId}`,{
+
+    } else if (this.searchId && this.selectedPackage === "DayOut") {
+      fetch(`http://localhost:8080/day-out/delete-by-id/${this.searchId}`, {
         method: "DELETE",
-       
+
       })
         .then((response) => {
           if (!response.ok) {
@@ -384,11 +352,11 @@ public packageExists:boolean=false;
           }
           return response.json();
         })
-       
-    }else if (this.searchId && this.selectedPackage === "MenuOptions") {
-      fetch(`http://localhost:8080/delete-by-id-menuoptions/${this.searchId}`,{
+
+    } else if (this.searchId && this.selectedPackage === "MenuOptions") {
+      fetch(`http://localhost:8080/menu-option/delete-by-id/${this.searchId}`, {
         method: "DELETE",
-       
+
       })
         .then((response) => {
           if (!response.ok) {
@@ -396,13 +364,13 @@ public packageExists:boolean=false;
           }
           return response.json();
         })
-       
-    } 
-  
+
+    }
+
   }
   loadTable() {
     if (this.selectedPackage == "Accommodation") {
-      fetch('http://localhost:8080/get-accommodation-package').then(res => res.json())
+      fetch('http://localhost:8080/accommodation/get-all-accommodation-packages').then(res => res.json())
         .then(data => {
           console.log(data);
 
@@ -420,16 +388,16 @@ public packageExists:boolean=false;
         });
 
     } else if (this.selectedPackage == "DayOut") {
-      fetch('http://localhost:8080/get-day-out-package').then(res => res.json())
+      fetch('http://localhost:8080/day-out/get-all-day-out-packages').then(res => res.json())
         .then(data => {
           console.log(data);
-         
+
           // this.accomdationPackageList.availableQty==data.availableSheets;
           console.log(this.accomdationPackageList.availableQty);
-         
+
           this.accomdationPackageList = data.map((pkg: any) => {
 
-           
+
             if (Array.isArray(pkg.packageDetails)) {
               pkg.packageDetails = pkg.packageDetails.map((detail: string) => {
 
@@ -441,7 +409,7 @@ public packageExists:boolean=false;
         });
 
     } else if (this.selectedPackage == "MenuOptions") {
-      fetch('http://localhost:8080/get-menu-option-package').then(res => res.json())
+      fetch('http://localhost:8080/menu-option/get-all-menu-option-packages').then(res => res.json())
         .then(data => {
           console.log(data);
 
@@ -461,18 +429,67 @@ public packageExists:boolean=false;
     }
   }
 
+  checkID(){
+    if (this.selectedPackage == null) {
+      alert("Please select a pacakge");
+    }
+    if (this.Package.id && this.selectedPackage === "Accommodation") {
+      fetch(`http://localhost:8080/accommodation/search-by-id/${this.Package.id}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+            alert("Already Exists");
+          
+        })
+        .catch((error) => {
+            this.addPackage();
+        });
+    } else if (this.searchId && this.selectedPackage === "DayOut") {
+      fetch(`http://localhost:8080/day-out/search-by-id/${this.searchId}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          alert("Already Exists");
+        
+      })
+      .catch((error) => {
+          this.addPackage();
+      });
+    } else if (this.searchId && this.selectedPackage === "MenuOptions") {
+      fetch(`http://localhost:8080/menu-option/search-by-id/${this.searchId}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          alert("Already Exists");
+        
+      })
+      .catch((error) => {
+          this.addPackage();
+      });
+    }
+  }
 
   addPackage() {
-    this.searchPackage();
-      if (this.packageExists==true) {
-        alert("Package with this ID already exists. Cannot add duplicate.");
-        this.packageExists=false;
-        return; // Exit the function if the package already exists
-      }
+    console.log("check");
+    
+   console.log("check2");
+    
     const formData = new FormData();
 
-    console.log(this.Package.PackgeDetailsArray);
-    formData.append('id', this.Package.id);
+    console.log(this.Package.packgeDetailsArray);
+    formData.append('id',this.Package.id);
     formData.append('packageNum', this.Package.packageNum);
     formData.append('packageName', this.Package.packageName);
     formData.append('price', this.Package.price.toString());
@@ -482,22 +499,11 @@ public packageExists:boolean=false;
     formData.append('packageDetails', JSON.stringify(this.Package.PackgeDetailsArray));
     console.log(formData);
 
-
-    if (this.Package.image1) {
-      formData.append('image1', this.Package.image1, this.Package.image1.name);
+    if (this.Package.image) {
+      formData.append('image', this.Package.image, this.Package.image.name);
     }
-    if (this.Package.image2) {
-      formData.append('image2', this.Package.image2, this.Package.image2.name);
-    }
-    if (this.Package.image3) {
-      formData.append('image3', this.Package.image3, this.Package.image3.name);
-    }
-    if (this.Package.image4) {
-      formData.append('image4', this.Package.image4, this.Package.image4.name);
-    }
-
     if (this.selectedPackage === "Accommodation") {
-      fetch("http://localhost:8080/add-accommodation-package", {
+      fetch("http://localhost:8080/accommodation/add-accommodation-package", {
         method: "POST",
         body: formData
       })
@@ -507,13 +513,27 @@ public packageExists:boolean=false;
               alert(JSON.stringify(errorData));
             });
           } else {
+          
             return res.json();
           }
         })
         .then((data) => {
           console.log("Package added successfully:", data);
-
-
+          Swal.fire({
+            title: "Good job!",
+            text:"Pacakge Added Successfully",
+            icon: "success"
+          });
+          this.Package = {     
+            id: "",     
+            packageNum: "",     
+            packageName: "",     
+            PackgeDetailsArray: [],     
+            price: "",     
+            availableQty: "",     
+            image: null 
+          };
+          console.log("check3");
         })
         .catch((error) => {
           console.error("Error uploading package:", error);
@@ -521,7 +541,7 @@ public packageExists:boolean=false;
         });
 
     } else if (this.selectedPackage === "DayOut") {
-      fetch("http://localhost:8080/add-day-out-package", {
+      fetch("http://localhost:8080/day-out/add-day-out-package", {
         method: "POST",
         body: formData
       })
@@ -531,20 +551,33 @@ public packageExists:boolean=false;
               alert(JSON.stringify(errorData));
             });
           } else {
+          
             return res.json();
           }
         })
         .then((data) => {
           console.log("Package added successfully:", data);
-
-
+          Swal.fire({
+            title: "Good job!",
+            text:"Pacakge Added Successfully",
+            icon: "success"
+          });
+          this.Package = {     
+            id: "",     
+            packageNum: "",     
+            packageName: "",     
+            PackgeDetailsArray: [],     
+            price: "",     
+            availableQty: "",     
+            image: null 
+          };
         })
         .catch((error) => {
           console.error("Error uploading package:", error);
 
         });
     } else if (this.selectedPackage === "MenuOptions") {
-      fetch("http://localhost:8080/add-menu-option-package", {
+      fetch("http://localhost:8080/menu-option/add-menu-option-package", {
         method: "POST",
         body: formData
       })
@@ -554,28 +587,44 @@ public packageExists:boolean=false;
               alert(JSON.stringify(errorData));
             });
           } else {
-            return res.json();
+                return res.json();
           }
         })
         .then((data) => {
           console.log("Package added successfully:", data);
-
-
+          
+          Swal.fire({
+            title: "Good job!",
+            text:"Pacakge Added Successfully",
+            icon: "success"
+          });
+          this.Package = {     
+            id: "",     
+            packageNum: "",     
+            packageName: "",     
+            PackgeDetailsArray: [],     
+            price: "",     
+            availableQty: "",     
+            image: null 
+          };
         })
         .catch((error) => {
           console.error("Error uploading package:", error);
 
         });
-    }
+      }
+    
 
 
   }
 
   onImageUpload(event: any, imageField: string) {
-    const file = event.target.files[0];  // Get the uploaded file
+    const file = event.target.files[0];  
     if (file) {
-      this.Package[imageField] = file;  // Store the file directly
+      this.Package[imageField] = file; 
     }
   }
+
+  
 
 }
