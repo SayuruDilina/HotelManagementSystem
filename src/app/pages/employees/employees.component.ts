@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Employee } from '../../../model/Employee';
 import Swal from 'sweetalert2';
+import { BasicauthService } from '../../basicauth.service';
 
 @Component({
   selector: 'app-employees',
@@ -13,16 +14,27 @@ import Swal from 'sweetalert2';
 })
 export class EmployeesComponent {
 
-  public employee: Employee; 
-  constructor(){
-    this.employee=new Employee('','','','','',0);
+  public employee: Employee;
+  public username: string = "";
+  public password: string = "";
+  public base64Credentials: any;
+
+  constructor(private service: BasicauthService) {
+    this.username = this.service.username;
+    this.password = this.service.password;
+    this.base64Credentials = btoa(`${this.username}:${this.password}`);
+    this.employee = new Employee('', '', '', '', '', 0);
   }
-  
+
   registerEmployee() {
+  
+
     fetch("http://localhost:8080/employee/register-employee", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': `Basic ${this.base64Credentials}`
+
       },
       body: JSON.stringify(this.employee)
     })
@@ -35,10 +47,10 @@ export class EmployeesComponent {
           return res.json().then((data) => {
             Swal.fire({
               title: "Good job!",
-              text:data.message,
+              text: data.message,
               icon: "success"
             });
-         
+
           });
         }
       })

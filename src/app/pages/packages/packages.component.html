@@ -18,8 +18,8 @@
     </div>
 
 
-    <div class="flex justify-end">
-        <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover"
+    <div class="flex justify-end group relative">
+        <button id="dropdownHoverButton"
             class="focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
             type="button" style="background-color:#F7E3D1; color: black; font-weight: bold;">
             Dropdown hover
@@ -31,7 +31,8 @@
             </svg>
         </button>
         <!-- Dropdown menu -->
-        <div id="dropdownHover" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+       <div id="dropdownHover" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 group-hover:block">
+
             <ul class="py-2 text-sm items-center " aria-labelledby="dropdownHoverButton">
                 <li><a (click)="selectPackage('Accommodation')" class="no-underline block px-4 py-2 hover:bg-gray-100"
                         style="color: black;">Accommodation</a>
